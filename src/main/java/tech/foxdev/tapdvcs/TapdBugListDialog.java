@@ -1,5 +1,7 @@
 package tech.foxdev.tapdvcs;
 
+import com.intellij.openapi.vcs.CommitMessageI;
+import com.intellij.openapi.vcs.VcsDataKeys;
 import org.jsoup.Jsoup;
 
 import javax.swing.*;
@@ -18,10 +20,13 @@ public class TapdBugListDialog extends JDialog {
     private JButton buttonCancel;
     private JList bugList;
 
+    private static CommitMessageI commitPanel;
+
     public TapdBugListDialog() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
+        bugList.setCellRenderer(new CheckboxListCellRenderer());
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -55,6 +60,18 @@ public class TapdBugListDialog extends JDialog {
 
     private void onOK() {
         // add your code here
+        var values = bugList.getSelectedValuesList();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < values.size(); i++) {
+            var data = (TapdBugData) values.get(i);
+            stringBuilder.append('[');
+            stringBuilder.append(data.DisplayName);
+            stringBuilder.append(']');
+            stringBuilder.append(data.Url);
+            stringBuilder.append('\n');
+        }
+
+        commitPanel.setCommitMessage(stringBuilder.toString());
         dispose();
     }
 
@@ -63,7 +80,9 @@ public class TapdBugListDialog extends JDialog {
         dispose();
     }
 
-    public static void main(String[] args) {
+    public static void main(CommitMessageI commitPanel) {
+
+        TapdBugListDialog.commitPanel = commitPanel;
         TapdBugListDialog dialog = new TapdBugListDialog();
         dialog.pack();
         dialog.setVisible(true);
@@ -72,7 +91,7 @@ public class TapdBugListDialog extends JDialog {
 
 
     // 全局HttpClient:
-    static HttpClient httpClient = HttpClient.newBuilder().build();
+    private static HttpClient httpClient = HttpClient.newBuilder().build();
 
     private void GetAllBug() {
         String url = "https://www.tapd.cn/my_worktable/todo_all/todo_all/61222066/todo";
@@ -95,10 +114,11 @@ public class TapdBugListDialog extends JDialog {
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (InterruptedException e) {
+            dispose();
             throw new RuntimeException(e);
         }
         // HTTP允许重复的Header，因此一个Header可对应多个Value:
-        //System.out.println(response.body());
+        System.out.println(response.body());
         var doc = Jsoup.parse(response.body());
         var allBugs = doc.getElementsByClass("tfl-editable");
         final DefaultListModel bugs = new DefaultListModel();
@@ -106,7 +126,7 @@ public class TapdBugListDialog extends JDialog {
         for (int i = 0; i < allBugs.size(); i++) {
             var bug = allBugs.get(i).getElementsByClass("card-title content-cardtitle namecol preview-title J-worktablePreview").first();
             var data = new TapdBugData();
-            data.DisplayName = bug.wholeText();
+            data.DisplayName = bug.attr("title");
             data.Url = bug.attr("href");
             bugs.addElement(data);
         }
