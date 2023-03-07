@@ -24,7 +24,13 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
+        <applicationService
+                serviceImplementation="tech.foxdev.tapdvcs.SettingsState"/>
         <checkinHandlerFactory implementation="tech.foxdev.tapdvcs.VcsCheckinHandlerFactory"/>
+        <applicationConfigurable
+                instance="tech.foxdev.tapdvcs.SettingsConfigurable"
+                id="tech.foxdev.tapdvcs.SettingsConfigurable"
+                displayName="Tapd-Vcs"/>
     </extensions>
 
     <actions>
@@ -33,4 +39,8 @@
             <add-to-group group-id="Vcs.MessageActionGroup" anchor="first"/>
         </action>
     </actions>
+    <projectListeners>
+
+
+    </projectListeners>
 </idea-plugin>
