@@ -2,6 +2,8 @@ package tech.foxdev.tapdvcs;
 
 import com.intellij.openapi.vcs.CommitMessageI;
 import com.intellij.openapi.vcs.VcsDataKeys;
+import com.intellij.ui.dsl.builder.impl.Context;
+import com.intellij.util.messages.MessageBus;
 import org.jsoup.Jsoup;
 
 import javax.swing.*;

@@ -24,7 +24,7 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-
+        <checkinHandlerFactory implementation="tech.foxdev.tapdvcs.VcsCheckinHandlerFactory"/>
     </extensions>
 
     <actions>
