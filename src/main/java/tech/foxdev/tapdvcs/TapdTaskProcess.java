@@ -29,6 +29,7 @@ public class TapdTaskProcess extends JDialog {
     private ArrayList<TapdBugData> bugIDs = new ArrayList<>();
 
     private Thread process;
+    private boolean stop = false;
 
     public TapdTaskProcess(ArrayList<TapdBugData> bugIDs) {
         this.bugIDs = bugIDs;
@@ -63,6 +64,9 @@ public class TapdTaskProcess extends JDialog {
                     progressBar.setMinimum(0);
                     progressBar.setMaximum(bugIDs.size() * 2);
                     for (int i = 0; i < bugIDs.size(); i++) {
+                        if (stop)
+                            break;
+
                         String bugID = bugIDs.get(i).ID;
                         progressBar.setValue(i * 2);
                         statusDesc.setText("Change Bug ID:" + bugID + " To InProcess");
@@ -76,6 +80,7 @@ public class TapdTaskProcess extends JDialog {
 
                 }
             });
+            stop = false;
             process.start();
         }
 
@@ -85,10 +90,11 @@ public class TapdTaskProcess extends JDialog {
     private void onCancel() {
         // add your code here if necessary
         if (process != null) {
-            //todo 这样不安全等后续修改
-            // process.stop();
+            stop = true;
+        } else {
+            dispose();
         }
-        dispose();
+
     }
 
     public static void main(ArrayList<TapdBugData> bugIDs) {
