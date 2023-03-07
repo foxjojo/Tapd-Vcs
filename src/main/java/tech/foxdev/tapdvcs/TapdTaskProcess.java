@@ -37,11 +37,7 @@ public class TapdTaskProcess extends JDialog {
         setModal(true);
         getRootPane().setDefaultButton(cancel);
 
-        cancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        });
+        cancel.addActionListener(e -> onCancel());
 
         // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -52,33 +48,26 @@ public class TapdTaskProcess extends JDialog {
         });
 
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         if (bugIDs.size() > 0) {
-            process = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    progressBar.setMinimum(0);
-                    progressBar.setMaximum(bugIDs.size() * 2);
-                    for (int i = 0; i < bugIDs.size(); i++) {
-                        if (stop)
-                            break;
+            process = new Thread(() -> {
+                progressBar.setMinimum(0);
+                progressBar.setMaximum(bugIDs.size() * 2);
+                for (int i = 0; i < bugIDs.size(); i++) {
+                    if (stop)
+                        break;
 
-                        String bugID = bugIDs.get(i).ID;
-                        progressBar.setValue(i * 2);
-                        statusDesc.setText("Change Bug ID:" + bugID + " To InProcess");
-                        Send(BuildUrl(Status.InProcess, bugID));
-                        statusDesc.setText("Change Bug ID:" + bugID + " To Fixed");
-                        progressBar.setValue(i * 2 + 1);
-                        Send(BuildUrl(Status.Fixed, bugID));
-                        logger.debug("Bug ID:" + bugID);
-                    }
-                    dispose();
-
+                    String bugID = bugIDs.get(i).ID;
+                    progressBar.setValue(i * 2);
+                    statusDesc.setText("Change Bug ID:" + bugID + " To InProcess");
+                    Send(BuildUrl(Status.InProcess, bugID));
+                    statusDesc.setText("Change Bug ID:" + bugID + " To Fixed");
+                    progressBar.setValue(i * 2 + 1);
+                    Send(BuildUrl(Status.Fixed, bugID));
+                    logger.debug("Bug ID:" + bugID);
                 }
+                dispose();
+
             });
             stop = false;
             process.start();
@@ -105,7 +94,7 @@ public class TapdTaskProcess extends JDialog {
 
     }
 
-    private static HttpClient httpClient = HttpClient.newBuilder().build();
+    private static final HttpClient httpClient = HttpClient.newBuilder().build();
 
     private boolean Send(String url) {
 
