@@ -25,22 +25,20 @@
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
         <applicationService
-                serviceImplementation="tech.foxdev.tapdvcs.SettingsState"/>
-        <checkinHandlerFactory implementation="tech.foxdev.tapdvcs.VcsCheckinHandlerFactory"/>
+                serviceImplementation="tech.foxdev.tapdvcs.TapdVcsSettingsState"/>
         <applicationConfigurable
-                instance="tech.foxdev.tapdvcs.SettingsConfigurable"
+                instance="tech.foxdev.tapdvcs.TapdVcsSettingsConfigurable"
                 id="tech.foxdev.tapdvcs.SettingsConfigurable"
                 displayName="Tapd-Vcs"/>
     </extensions>
-
+    <projectListeners>
+        <listener class="tech.foxdev.tapdvcs.VcsHandler"
+                  topic="com.intellij.notification.Notifications"/>
+    </projectListeners>
     <actions>
         <action id="OpenTapdBugListBtn" class="tech.foxdev.tapdvcs.OpenTapdBugListAction" text="OpenTapdBugListBtn"
                 description="open tapd bug ">
             <add-to-group group-id="Vcs.MessageActionGroup" anchor="first"/>
         </action>
     </actions>
-    <projectListeners>
-
-
-    </projectListeners>
 </idea-plugin>

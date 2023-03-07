@@ -27,7 +27,7 @@ public class OpenTapdBugListAction extends AnAction {
         final CommitMessageI commitPanel = getCommitPanel(actionEvent);
         if (commitPanel == null)
             return;
-        SettingsState settings = SettingsState.getInstance();
+        TapdVcsSettingsState settings = TapdVcsSettingsState.getInstance();
         String id = settings.projectID;
         String cookie = settings.cookie;
         if (id.isEmpty()||cookie.isEmpty() ||id.length() == 0 || cookie.length() == 0)

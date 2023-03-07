@@ -10,23 +10,23 @@ import org.jetbrains.annotations.Nullable;
 
 @State(
         name = "tech.foxdev.tapdvcs.SettingsState",
-        storages = @Storage("Tapd-VcsSettingsPlugin.xml")
+        storages = @Storage("TapdVcsSettingsPlugin.xml")
 )
-public class SettingsState implements PersistentStateComponent<SettingsState> {
+public class TapdVcsSettingsState implements PersistentStateComponent<TapdVcsSettingsState> {
     public String projectID;
     public String cookie;
 
-    public static SettingsState getInstance() {
-        return ApplicationManager.getApplication().getService(SettingsState.class);
+    public static TapdVcsSettingsState getInstance() {
+        return ApplicationManager.getApplication().getService(TapdVcsSettingsState.class);
     }
 
     @Override
-    public @Nullable SettingsState getState() {
+    public @Nullable TapdVcsSettingsState getState() {
         return this;
     }
 
     @Override
-    public void loadState(@NotNull SettingsState state) {
+    public void loadState(@NotNull TapdVcsSettingsState state) {
         XmlSerializerUtil.copyBean(state, this);
     }
 }

@@ -2,23 +2,15 @@ package tech.foxdev.tapdvcs;
 
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.options.Configurable;
-import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.util.NlsContexts;
-import com.intellij.ui.DocumentAdapter;
-import com.intellij.util.ui.GridBag;
-import com.intellij.util.ui.JBDimension;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.InputMethodListener;
 
-public class SettingsConfigurable implements Configurable {
+public class TapdVcsSettingsConfigurable implements Configurable {
 
-    private static final Logger LOG = Logger.getInstance(SettingsConfigurable.class);
+    private static final Logger LOG = Logger.getInstance(TapdVcsSettingsConfigurable.class);
 
     private JPanel myMainComponent;
     private JTextField myProjectIDField;
@@ -27,14 +19,14 @@ public class SettingsConfigurable implements Configurable {
 
     @Override
     public @NlsContexts.ConfigurableName String getDisplayName() {
-        return null;
+        return "Tapd-Vcs";
     }
 
     @Override
     public @Nullable JComponent createComponent() {
         if (myMainComponent == null) {
             myMainComponent = new JPanel();
-            var setData = SettingsState.getInstance();
+            var setData = TapdVcsSettingsState.getInstance();
 
             myMainComponent.setLayout(new GridLayout(4, 1));
 
@@ -50,7 +42,6 @@ public class SettingsConfigurable implements Configurable {
             myMainComponent.add(myCookieField);
 
 
-
         }
 
         return myMainComponent;
@@ -58,17 +49,16 @@ public class SettingsConfigurable implements Configurable {
 
     @Override
     public boolean isModified() {
-        SettingsState settings = SettingsState.getInstance();
+        TapdVcsSettingsState settings = TapdVcsSettingsState.getInstance();
         boolean modified = !myProjectIDField.getText().equals(settings.projectID);
-        modified |= myCookieField.getText() != settings.cookie;
+        modified |= !myCookieField.getText().equals(settings.cookie);
         return modified;
     }
 
     @Override
-    public void apply() throws ConfigurationException {
-        var setData = SettingsState.getInstance();
+    public void apply()  {
+        var setData = TapdVcsSettingsState.getInstance();
         setData.projectID = myProjectIDField.getText();
         setData.cookie = myCookieField.getText();
-
     }
 }

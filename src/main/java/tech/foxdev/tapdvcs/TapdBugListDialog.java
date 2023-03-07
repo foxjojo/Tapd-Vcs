@@ -100,7 +100,7 @@ public class TapdBugListDialog extends JDialog {
     private static HttpClient httpClient = HttpClient.newBuilder().build();
 
     private void GetAllBug() {
-        SettingsState settings = SettingsState.getInstance();
+        TapdVcsSettingsState settings = TapdVcsSettingsState.getInstance();
         String id = settings.projectID;
         String cookie = settings.cookie;
         String url = "https://www.tapd.cn/my_worktable/todo_all/todo_all/" + id + "/todo";
@@ -128,18 +128,21 @@ public class TapdBugListDialog extends JDialog {
             throw new RuntimeException(e);
         }
         // HTTP允许重复的Header，因此一个Header可对应多个Value:
-        System.out.println(response.body());
+        //System.out.println(response.body());
         var doc = Jsoup.parse(response.body());
         var allBugs = doc.getElementsByClass("tfl-editable");
         final DefaultListModel bugs = new DefaultListModel();
-
+        VcsHandler.ClearData();
         for (int i = 0; i < allBugs.size(); i++) {
             var bug = allBugs.get(i).getElementsByClass("card-title content-cardtitle namecol preview-title J-worktablePreview").first();
             var data = new TapdBugData();
             data.DisplayName = bug.attr("title");
             data.Url = bug.attr("href");
+            data.ID = bug.attr("data-entityid");
             bugs.addElement(data);
+            VcsHandler.AddBug(data);
         }
+
         bugList.setModel(bugs);
     }
 
