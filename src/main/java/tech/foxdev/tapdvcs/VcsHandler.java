@@ -4,6 +4,7 @@ import com.intellij.notification.Notification;
 import com.intellij.notification.Notifications;
 import com.intellij.openapi.diagnostic.Logger;
 import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
 public class VcsHandler implements Notifications {
@@ -19,10 +20,9 @@ public class VcsHandler implements Notifications {
         if ("Vcs Messages".equals(notification.getGroupId()) && "vcs.commit.finished".equals(notification.getDisplayId())) {
 
             var strArray = notification.getContent().split("<br/>");
-            System.out.println(strArray[1]);
-            logger.debug(strArray[1]);
-
-            TapdTaskProcess.main(bugIDs);
+            logger.debug(strArray[strArray.length - 1]);
+            if (bugIDs.size() > 0)
+                TapdTaskProcess.main(bugIDs, strArray[strArray.length - 1]);
         }
 
     }

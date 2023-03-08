@@ -66,17 +66,18 @@ public class TapdBugListDialog extends JDialog {
 
     private void onOK() {
         // add your code here
+        VcsHandler.ClearData();
         var values = bugList.getSelectedValuesList();
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < values.size(); i++) {
             var data = (TapdBugData) values.get(i);
+            VcsHandler.AddBug(data);
             stringBuilder.append('[');
             stringBuilder.append(data.DisplayName);
             stringBuilder.append(']');
             stringBuilder.append(data.Url);
             stringBuilder.append('\n');
         }
-
         commitPanel.setCommitMessage(stringBuilder.toString());
         dispose();
     }
@@ -132,6 +133,8 @@ public class TapdBugListDialog extends JDialog {
         var doc = Jsoup.parse(response.body());
         var allBugs = doc.getElementsByClass("tfl-editable");
         final DefaultListModel bugs = new DefaultListModel();
+
+        var ownName = doc.getElementsByClass(" left-tree-brick nav-iconbtn dropdown user").first().getElementsByTag("a").first().attr("title");
         VcsHandler.ClearData();
         for (int i = 0; i < allBugs.size(); i++) {
             var bug = allBugs.get(i).getElementsByClass("card-title content-cardtitle namecol preview-title J-worktablePreview").first();
@@ -139,8 +142,11 @@ public class TapdBugListDialog extends JDialog {
             data.DisplayName = bug.attr("title");
             data.Url = bug.attr("href");
             data.ID = bug.attr("data-entityid");
+            var createName = allBugs.get(i).getElementById("td_bug_reporter_" + data.ID).getElementsByTag("span").first().wholeText();
+            data.CreateName = createName;
+            data.OwnName = ownName;
             bugs.addElement(data);
-            VcsHandler.AddBug(data);
+
         }
 
         bugList.setModel(bugs);
