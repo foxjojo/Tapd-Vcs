@@ -3,6 +3,8 @@
 # 如何设置
 ### 用浏览器打开Tapd并登录，按F12打开网页控制台选择一个请求
 ![avatar](doc/GetCookie.png)
+<br>**最最重要的一点 一定要打开创建人如下图所示 否则是无法把问题踢回创建人的**
+![avatar](doc/Tip.png)
 ### 记住这两个参数然后复制到下图中的插件设置面板中
 ![avatar](doc/SetPlugin.png)
 
@@ -11,3 +13,4 @@
 ![avatar](doc/OpenPlugin.png)
 ### 弹出bug列表面板  可以使用ctrl+鼠标左键进行多选
 ![avatar](doc/SetCommit.png)
+<br>最后插件就会自动将bug描述和链接写入Commit Message内啦，在点击提交后就会自动去关闭选择的问题。
