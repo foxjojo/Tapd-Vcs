@@ -29,10 +29,13 @@ public class VcsHandler implements Notifications {
 
     public static void ClearData() {
         bugIDs.clear();
+        logger.info("ClearData");
     }
 
     public static void AddBug(TapdBugData data) {
+
         bugIDs.add(data);
+        logger.info("AddData"+data.DisplayName);
     }
 
 

@@ -72,8 +72,9 @@ public class TapdTaskProcess extends JDialog {
                     progressBar.setValue(i * 2 + 1);
                     BuildUrl(Status.FixedAndAddComment, bugIDs.get(i));
 
-                    logger.debug("Bug ID:" + displayName);
+                    logger.info("Bug ID:" + displayName);
                 }
+                VcsHandler.ClearData();
                 dispose();
 
             });
@@ -89,6 +90,7 @@ public class TapdTaskProcess extends JDialog {
         if (process != null) {
             stop = true;
         } else {
+            VcsHandler.ClearData();
             dispose();
         }
 
@@ -105,7 +107,7 @@ public class TapdTaskProcess extends JDialog {
     private static final HttpClient httpClient = HttpClient.newBuilder().build();
 
     private boolean Send(String url, String postData) {
-        System.out.println(url);
+        logger.info(url);
         TapdVcsSettingsState settings = TapdVcsSettingsState.getInstance();
         String cookie = settings.cookie;
 
@@ -147,8 +149,8 @@ public class TapdTaskProcess extends JDialog {
             return false;
         }
         // HTTP允许重复的Header，因此一个Header可对应多个Value:
-        System.out.println(response.statusCode());
-        System.out.println(response.body());
+        logger.info(String.valueOf(response.statusCode()));
+        logger.info(response.body());
         return true;
     }
 
