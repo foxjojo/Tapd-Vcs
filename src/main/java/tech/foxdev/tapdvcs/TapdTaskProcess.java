@@ -198,11 +198,10 @@ public class TapdTaskProcess extends JDialog {
         String url = "https://www.tapd.cn/api/entity/workflow/change_bug_status";
         switch (status) {
             case InProcess:
-
                 Send(url, BuildPostData(tapdBugData, "new", "in_progress", tapdBugData.OwnName, tapdBugData.OwnName, ""));
                 break;
             case FixedAndAddComment:
-                String data = BuildPostData(tapdBugData,"in_progress", "resolved", tapdBugData.CreateName, tapdBugData.CreateName, comment);
+                String data = BuildPostData(tapdBugData,"in_progress", "resolved", tapdBugData.CreateName, tapdBugData.CreateName, comment+"\n"+TapdBugListDialog.TapdComment);
                 Send(url, data);
                 break;
         }

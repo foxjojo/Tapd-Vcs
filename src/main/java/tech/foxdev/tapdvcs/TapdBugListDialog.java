@@ -1,11 +1,7 @@
 package tech.foxdev.tapdvcs;
 
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.openapi.vcs.CommitMessageI;
-import com.intellij.openapi.vcs.VcsDataKeys;
-import com.intellij.ui.popup.PopupComponent;
-import com.intellij.util.messages.MessageBus;
 import org.jsoup.Jsoup;
 
 import javax.swing.*;
@@ -19,10 +15,12 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 
 public class TapdBugListDialog extends JDialog {
+    public static String TapdComment;
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
     private JList bugList;
+    private JTextArea comment;
 
     private static CommitMessageI commitPanel;
     private static Project project;
@@ -32,6 +30,7 @@ public class TapdBugListDialog extends JDialog {
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
         bugList.setCellRenderer(new CheckboxListCellRenderer());
+
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -79,10 +78,13 @@ public class TapdBugListDialog extends JDialog {
             stringBuilder.append('\n');
         }
         commitPanel.setCommitMessage(stringBuilder.toString());
+        TapdComment = comment.getText();
         dispose();
     }
 
     private void onCancel() {
+        VcsHandler.ClearData();
+        TapdComment = "";
         dispose();
     }
 

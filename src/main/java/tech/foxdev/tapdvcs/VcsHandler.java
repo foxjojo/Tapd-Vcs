@@ -13,13 +13,14 @@ public class VcsHandler implements Notifications {
     private static final Logger logger = Logger.getInstance(VcsHandler.class);
 
     private static ArrayList<TapdBugData> bugIDs = new ArrayList<>();
-
+    public static String CommitVersion;
     @Override
     public void notify(@NotNull final Notification notification) {
 
         if ("Vcs Messages".equals(notification.getGroupId()) && "vcs.commit.finished".equals(notification.getDisplayId())) {
 
             var strArray = notification.getContent().split("<br/>");
+            CommitVersion=strArray[strArray.length - 1];
             logger.debug(strArray[strArray.length - 1]);
             if (bugIDs.size() > 0)
                 TapdTaskProcess.main(bugIDs, strArray[strArray.length - 1]);
