@@ -3,6 +3,7 @@ package tech.foxdev.tapdvcs;
 import com.intellij.notification.Notification;
 import com.intellij.notification.Notifications;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.vcs.VcsNotificationIdsHolder;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class VcsHandler implements Notifications {
     @Override
     public void notify(@NotNull final Notification notification) {
 
-        if ("Vcs Messages".equals(notification.getGroupId()) && "vcs.commit.finished".equals(notification.getDisplayId())) {
+        if (VcsNotificationIdsHolder.COMMIT_FINISHED.equals(notification.getDisplayId())) {
 
             var strArray = notification.getContent().split("<br/>");
             CommitVersion=strArray[strArray.length - 1];
