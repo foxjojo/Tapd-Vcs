@@ -12,7 +12,7 @@ public class TapdVcsCheckinHandlerFactory extends CheckinHandlerFactory {
 
     @Override
     public @NotNull CheckinHandler createHandler(@NotNull CheckinProjectPanel panel, @NotNull CommitContext commitContext) {
-        //打开提交面板时清空上一次遗留的数据
+        //clean pre data
         VcsHandler.ClearData();
         TapdBugListDialog.TapdComment = "";
         return CheckinHandler.DUMMY;

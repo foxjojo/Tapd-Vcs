@@ -21,7 +21,9 @@ public class TapdVcsSettingsState implements PersistentStateComponent<TapdVcsSet
     public String projectID;
     public String cookie;
     public String decToken;
+    public long cookieExpirationDate;
 
+    public String userName;
     public static TapdVcsSettingsState getInstance() {
         return ApplicationManager.getApplication().getService(TapdVcsSettingsState.class);
     }
