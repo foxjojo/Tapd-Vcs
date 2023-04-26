@@ -1,13 +1,8 @@
 # Tapd-Vcs
 用于在IDEA中vcs提交时快速关闭tapd中相关问题并将相关问题和链接复制到commit中的IDEA插件,代码目前没有整理，也许有空会整理一下maybe φ(゜▽゜*)♪ **对了目前只支持SVN  其他的需要等后续完善支持  毕竟我现在主要用SVN ಥ_ಥ**
 # 如何设置
-### 用浏览器打开Tapd并登录，按F12打开网页控制台选择一个请求
-![avatar](doc/GetCookie.png)
 <br>**最最重要的一点 一定要打开创建人如下图所示 否则是无法把问题踢回创建人的**
 ![avatar](doc/Tip.png)
-### 记住这两个参数然后复制到下图中的插件设置面板中
-![avatar](doc/SetPlugin.png)
-
 # 如何使用
 ### 点击提交后出现提交面板，点击图标打开bug列表
 ![avatar](doc/OpenPlugin.png)
