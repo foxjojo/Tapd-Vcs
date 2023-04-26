@@ -9,6 +9,9 @@ jobs:
         with:
           java-version: 11
           distribution: temurin
+      - name: allFile
+        run: |
+          ls -a
       - name: Build with Gradle
         run: |
           sudo ./gradlew check buildPlugin
