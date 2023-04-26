@@ -10,7 +10,7 @@ jobs:
           java-version: 11
           distribution: temurin
       - name: Build with Gradle
-        run: ./gradlew check buildPlugin
+        run: sudo ./gradlew check buildPlugin
 #      - name: Archive distribution artifact
 #        uses: actions/upload-artifact@v3
 #        with:
