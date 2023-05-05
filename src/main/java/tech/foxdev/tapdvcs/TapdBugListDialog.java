@@ -144,7 +144,11 @@ public class TapdBugListDialog extends JDialog {
             data.DisplayName = bug.attr("title");
             data.Url = bug.attr("href");
             data.ID = bug.attr("data-entityid");
-            var createName = allBugs.get(i).getElementById("td_bug_reporter_" + data.ID).getElementsByTag("span").first().wholeText();
+            var nameItem = allBugs.get(i).getElementById("td_bug_reporter_" + data.ID);
+            if( nameItem== null){
+               continue;
+            }
+            var createName = nameItem.getElementsByTag("span").first().wholeText();
             data.CreateName = createName;
             data.OwnName = ownName;
             bugs.addElement(data);
