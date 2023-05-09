@@ -1,4 +1,11 @@
-on: [ push, pull_request ]
+on:
+ push:
+    # Sequence of patterns matched against refs/heads
+    branches:    
+      - master
+    # Sequence of patterns matched against refs/tags
+    tags:        
+      - v*
 jobs:
   build:
     runs-on: self-hosted
@@ -9,14 +16,11 @@ jobs:
         with:
           java-version: 11
           distribution: temurin
-      - name: allFile
-        run: |
-          ls -a
       - name: Build with Gradle
         run: |
           ./gradlew check buildPlugin
-#      - name: Archive distribution artifact
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: "antlr-intellij-development"
-#          path: build/distributions/antlr-intellij-plugin-v4-*.zip
+      - name: Archive distribution artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: "tapd-vcs-intellij-development"
+          path: build/distributions/Tapd-Vcs-*.zip
