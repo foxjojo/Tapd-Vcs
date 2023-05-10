@@ -19,8 +19,12 @@ jobs:
       - name: Build with Gradle
         run: |
           ./gradlew check buildPlugin
-      - name: Archive distribution artifact
-        uses: actions/upload-artifact@v3
+      - name: Releases Upload
+        uses: "marvinpinto/action-automatic-releases@latest"
         with:
-          name: "tapd-vcs-intellij-development"
-          path: build/distributions/Tapd-Vcs-*.zip
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          automatic_release_tag: "latest"
+          files: |
+            build/distributions/Tapd-Vcs-*.zip
+
