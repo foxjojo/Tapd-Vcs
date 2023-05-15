@@ -57,6 +57,8 @@ public class TapdVcsSettingsConfigurable implements Configurable {
     private JLabel loginUserName;
     private JComboBox projects;
     private JButton logout;
+    private JLabel cookieExpirationDate;
+
 
     @Override
     public @NlsContexts.ConfigurableName String getDisplayName() {
@@ -69,8 +71,9 @@ public class TapdVcsSettingsConfigurable implements Configurable {
 
             myMainComponent = new JPanel();
             var setData = TapdVcsSettingsState.getInstance();
-            projectPanel = new JPanel(new GridLayout(5, 1));
+            projectPanel = new JPanel(new GridLayout(6, 1));
             loginUserName = new JLabel(setData.userName, JLabel.CENTER);
+            cookieExpirationDate = new JLabel("", JLabel.CENTER);
             projects = new ComboBox();
             logout = new JButton("Logout");
             logout.addActionListener(new ActionListener() {
@@ -90,6 +93,7 @@ public class TapdVcsSettingsConfigurable implements Configurable {
             projectPanel.add(new JLabel("CurProject", JLabel.CENTER));
             projectPanel.add(projects);
             projectPanel.add(logout);
+            projectPanel.add(cookieExpirationDate);
             myMainComponent.add(projectPanel);
 
 
@@ -109,6 +113,9 @@ public class TapdVcsSettingsConfigurable implements Configurable {
                     throw new RuntimeException(e);
                 }
             } else {
+                var date =new Date( setData.cookieExpirationDate );
+                var dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                cookieExpirationDate.setText("CookieExpirationDate:"+dateFormat.format(date));
                 loginPanel.setVisible(false);
                 projectPanel.setVisible(true);
                 InitProjectPanel();
