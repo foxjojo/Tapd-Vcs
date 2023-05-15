@@ -2,7 +2,7 @@
 <idea-plugin>
     <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
     <id>tech.foxdev.Tapd-Vcs</id>
-    <version>1.1.0</version>
+    <version>will be replaced by gradle</version>
     <!-- Public plugin name should be written in Title Case.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
     <name>Tapd-Vcs</name>
@@ -14,7 +14,9 @@
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description><![CDATA[
-    只需要设置对应cookie和项目id就可以当vcs提交时可以自动在tapd关闭选定的问题并上报vcs对应版本号
+    只需要通过企业微信扫码登录后就可以在vcs提交时自动关闭tapd上选定的问题并附上vcs对应版本号
+    <br>
+    <a href="https://github.com/foxjojo/Tapd-Vcs">project site</a>.
     ]]></description>
 
     <!-- Product and plugin compatibility requirements.
