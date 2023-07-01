@@ -14,8 +14,6 @@ public class TipDialog extends DialogWrapper {
         desc = tip;
         init();
         setTitle("Tapd-Vcs");
-
-
     }
     @Override
     protected @Nullable JComponent createCenterPanel() {
