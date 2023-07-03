@@ -6,5 +6,12 @@ public class TapdBugData {
     public String ID;
     public String CreateName;
 
+    public enum Status {
+        New,
+        Accept,
+        ReOpen
+    }
+
+    public Status CurStatus;
     public String OwnName;
 }

@@ -2,15 +2,18 @@ package tech.foxdev.tapdvcs;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vcs.CommitMessageI;
+import org.apache.commons.lang.CharSet;
 import org.jsoup.Jsoup;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.Charset;
 import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 
@@ -32,7 +35,7 @@ public class TapdBugListDialog extends JDialog {
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
         bugList.setCellRenderer(new CheckboxListCellRenderer());
-        contentPanel.setSize(550,150);
+        contentPanel.setSize(550, 150);
         contentPanel.updateUI();
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -138,11 +141,24 @@ public class TapdBugListDialog extends JDialog {
             var ownName = doc.getElementsByClass(" left-tree-brick nav-iconbtn dropdown user").first().getElementsByTag("a").first().attr("title");
             VcsHandler.ClearData();
             for (int i = 0; i < allBugs.size(); i++) {
+                var itemID = allBugs.get(i).attr("data-item-id");
+                String bugStatus = allBugs.get(i).getElementsByTag("td").get(3).text();
                 var bug = allBugs.get(i).getElementsByClass("card-title content-cardtitle namecol preview-title J-worktablePreview").first();
                 var data = new TapdBugData();
                 data.DisplayName = bug.attr("title");
                 data.Url = bug.attr("href");
                 data.ID = bug.attr("data-entityid");
+                String NewS = "\u65B0";
+                String AccS = "\u63A5\u53D7/\u5904\u7406";
+                String ReOpenS = "\u91CD\u65B0\u6253\u5F00";
+
+                if (bugStatus.equals(NewS)) {
+                    data.CurStatus = TapdBugData.Status.New;
+                } else if (bugStatus.equals(AccS)) {
+                    data.CurStatus = TapdBugData.Status.Accept;
+                } else if (bugStatus.equals(ReOpenS)) {
+                    data.CurStatus = TapdBugData.Status.ReOpen;
+                }
                 var nameItem = allBugs.get(i).getElementById("td_bug_reporter_" + data.ID);
                 if (nameItem == null) {
                     continue;
@@ -161,7 +177,6 @@ public class TapdBugListDialog extends JDialog {
 
 
     }
-
 
 
 }

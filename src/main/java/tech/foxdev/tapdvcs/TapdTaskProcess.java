@@ -1,9 +1,7 @@
 package tech.foxdev.tapdvcs;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.jr.ob.JSON;
 import com.intellij.openapi.diagnostic.Logger;
-import org.apache.commons.httpclient.Cookie;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -15,9 +13,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Timer;
-import java.util.regex.Matcher;
 
 public class TapdTaskProcess extends JDialog {
     private static String comment;
@@ -198,7 +193,12 @@ public class TapdTaskProcess extends JDialog {
         String url = "https://www.tapd.cn/api/entity/workflow/change_bug_status";
         switch (status) {
             case InProcess:
-                Send(url, BuildPostData(tapdBugData, "new", "in_progress", tapdBugData.OwnName, tapdBugData.OwnName, ""));
+                if(tapdBugData.CurStatus == TapdBugData.Status.Accept)
+                    break;
+                String curStatus = "new";
+                if(tapdBugData.CurStatus == TapdBugData.Status.ReOpen)
+                    curStatus = "reopened";
+                Send(url, BuildPostData(tapdBugData, curStatus, "in_progress", tapdBugData.OwnName, tapdBugData.OwnName, ""));
                 break;
             case FixedAndAddComment:
                 String data = BuildPostData(tapdBugData,"in_progress", "resolved", tapdBugData.CreateName, tapdBugData.CreateName, comment+"\n"+TapdBugListDialog.TapdComment);
